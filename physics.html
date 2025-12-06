@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Jolen: The Momentum Arena</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cyber Jolen: The Momentum Arena</h1>
+            <p class="subtitle">Physics-Based Marble Battle Game</p>
+        </header>
+
+        <div class="game-wrapper">
+            <div class="sidebar">
+                <div class="main-panel">
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-label">Score</div>
+                            <div class="stat-value" id="score">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Enemies</div>
+                            <div class="stat-value" id="enemies-left">5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="power-section">
+                        <div class="power-label">Power: <span id="power-value">0%</span></div>
+                        <div class="power-bar">
+                            <div id="power-fill" class="power-fill"></div>
+                        </div>
+                    </div>
+
+                    <button id="reset-btn" class="reset-btn">Reset (R)</button>
+                </div>
+
+                <div class="physics-calc-panel">
+                    <h3>Live Physics Calculations</h3>
+                    <div class="calc-section">
+                        <div class="calc-title">Impulse Applied</div>
+                        <div class="calc-formula">J = F × Δt</div>
+                        <div class="calc-value" id="impulse-value">0.00 N·s</div>
+                    </div>
+                    <div class="calc-section">
+                        <div class="calc-title">Momentum</div>
+                        <div class="calc-formula">p = m × v</div>
+                        <div class="calc-value" id="striker-momentum">0.00 kg·m/s</div>
+                    </div>
+                    <div class="calc-section">
+                        <div class="calc-title">Velocity</div>
+                        <div class="calc-formula">v = √(vₓ² + vᵧ²)</div>
+                        <div class="calc-value" id="striker-velocity">0.00 m/s</div>
+                    </div>
+                    <div class="calc-section">
+                        <div class="calc-title">Kinetic Energy</div>
+                        <div class="calc-formula">KE = ½mv²</div>
+                        <div class="calc-value" id="striker-ke">0.00 J</div>
+                    </div>
+                    <div class="calc-section">
+                        <div class="calc-title">Collision</div>
+                        <div class="calc-formula">Δp = m₁v₁ + m₂v₂</div>
+                        <div class="calc-value" id="collision-momentum">No collision</div>
+                    </div>
+                    <div class="calc-section">
+                        <div class="calc-title">Friction Force</div>
+                        <div class="calc-formula">F = μ × N</div>
+                        <div class="calc-value" id="friction-info">μ = 0.02</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <canvas id="gameCanvas"></canvas>
+                    <div class="controls-hint">
+                        <p>Click & Drag to aim • Release to launch</p>
+                    </div>
+                </div>
+                <div id="popup-backdrop" class="popup-backdrop"></div>
+                <div id="start-popup" class="start-popup">
+                    <h2> Cyber Jolen: The Momentum Arena </h2>
+                    <div class="tutorial-content">
+                        <h3>Understanding Impulse & Momentum</h3>
+                        <div class="tutorial-section">
+                            <p><strong>Impulse (J):</strong> Force × Time</p>
+                            <p class="tutorial-desc">When you drag and release, you apply an impulse to the striker. The longer/farther you drag, the greater the impulse!</p>
+                        </div>
+                        <div class="tutorial-section">
+                            <p><strong>Momentum (p):</strong> Mass × Velocity</p>
+                            <p class="tutorial-desc">Impulse changes momentum! J = Δp. Watch how the striker's momentum changes when you launch it.</p>
+                        </div>
+                        <div class="tutorial-section">
+                            <p><strong>Conservation of Momentum:</strong></p>
+                            <p class="tutorial-desc">When marbles collide, total momentum is conserved. See it in action when your striker hits enemies!</p>
+                        </div>
+                    </div>
+                    <button id="start-btn" class="start-btn">Start Game</button>
+                </div>
+                <div id="game-over" class="game-over hidden">
+                    <h2>Game Over!</h2>
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <button id="restart-btn" class="restart-btn">Play Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
+

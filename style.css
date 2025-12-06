@@ -1,0 +1,502 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 50%, #0a0e1a 100%);
+    margin: 0;
+    padding: 10px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    max-width: 1600px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+header h1 {
+    font-size: 1.8em;
+    text-shadow: 0 0 15px rgba(255, 214, 0, 0.8), 0 0 25px rgba(255, 107, 53, 0.6), 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 5px;
+    color: #FFD600; /* Bright yellow for visibility */
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    font-size: 0.9em;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.game-wrapper {
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Sidebar - Cleaner Layout */
+.sidebar {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+}
+
+/* Custom Scrollbar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(41, 121, 255, 0.5);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(41, 121, 255, 0.7);
+}
+
+.physics-calc-panel::-webkit-scrollbar {
+    width: 4px;
+}
+
+.physics-calc-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+.physics-calc-panel::-webkit-scrollbar-thumb {
+    background: rgba(41, 121, 255, 0.4);
+    border-radius: 2px;
+}
+
+.main-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.stats-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.stat-label {
+    font-size: 0.75em;
+    opacity: 0.8;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #FFD600;
+    text-shadow: 0 0 8px rgba(255, 214, 0, 0.6);
+}
+
+.power-section {
+    margin-bottom: 12px;
+}
+
+.power-label {
+    font-size: 0.8em;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.power-bar {
+    width: 100%;
+    height: 22px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 11px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.power-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00E676, #FFD600, #FF6B35);
+    width: 0%;
+    transition: width 0.1s ease;
+    border-radius: 9px;
+    box-shadow: 0 0 10px rgba(255, 214, 0, 0.5);
+}
+
+#power-value {
+    font-weight: bold;
+    color: #FF6B35;
+    text-shadow: 0 0 6px rgba(255, 107, 53, 0.5);
+}
+
+.reset-btn {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.85em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #FF6B35, #FF1744);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4), 0 0 10px rgba(255, 107, 53, 0.2);
+}
+
+.reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6), 0 0 15px rgba(255, 107, 53, 0.4);
+}
+
+.reset-btn:active {
+    transform: translateY(0);
+}
+
+/* Physics Calculations Panel */
+.physics-calc-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.physics-calc-panel h3 {
+    font-size: 1em;
+    margin-bottom: 12px;
+    color: #2979FF;
+    text-align: center;
+    border-bottom: 2px solid rgba(41, 121, 255, 0.4);
+    padding-bottom: 8px;
+    text-shadow: 0 0 8px rgba(41, 121, 255, 0.4);
+}
+
+.calc-section {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border-left: 3px solid #2979FF;
+    box-shadow: 0 0 5px rgba(41, 121, 255, 0.2);
+}
+
+.calc-section:last-child {
+    margin-bottom: 0;
+}
+
+.calc-title {
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #2979FF;
+    text-shadow: 0 0 6px rgba(41, 121, 255, 0.3);
+}
+
+.calc-formula {
+    font-size: 0.7em;
+    font-family: 'Courier New', monospace;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+    font-style: italic;
+}
+
+.calc-value {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #00E676;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 5px rgba(0, 230, 118, 0.4);
+}
+
+/* Canvas Container */
+.canvas-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    min-height: 0;
+}
+
+.canvas-wrapper {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameCanvas {
+    background: radial-gradient(circle at center, #1a1f2e, #0a0e1a);
+    border-radius: 12px;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(41, 121, 255, 0.2);
+    cursor: crosshair;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+
+.controls-hint {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.75em;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+/* Popup Backdrop */
+.popup-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 150;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-backdrop.hidden {
+    display: none;
+}
+
+/* Start Popup */
+.start-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(10, 14, 26, 0.98);
+    padding: 40px 50px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 50px rgba(41, 121, 255, 0.5);
+    border: 4px solid #2979FF;
+    z-index: 200;
+    max-width: 900px;
+    width: 90%;
+    overflow: visible;
+}
+
+.start-popup.hidden {
+    display: none;
+}
+
+
+.start-popup h2 {
+    font-size: 1.8em;
+    color: #FFD600;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(255, 214, 0, 0.8);
+    line-height: 1.2;
+}
+
+.tutorial-content {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.tutorial-content h3 {
+    font-size: 1.2em;
+    color: #2979FF;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(41, 121, 255, 0.5);
+}
+
+.tutorial-section {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: rgba(41, 121, 255, 0.15);
+    border-radius: 10px;
+    border-left: 4px solid #2979FF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tutorial-section p {
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 0.95em;
+}
+
+.tutorial-section p strong {
+    color: #FFD600;
+    font-size: 1em;
+}
+
+.tutorial-desc {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
+    font-style: italic;
+}
+
+.start-btn {
+    padding: 12px 35px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #1a5fb3, #00b85c);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(41, 121, 255, 0.5), 0 0 15px rgba(0, 230, 118, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(41, 121, 255, 0.6), 0 0 20px rgba(0, 230, 118, 0.5);
+}
+
+.start-btn:active {
+    transform: translateY(0);
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(10, 14, 26, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 214, 0, 0.3);
+    border: 2px solid #FFD600;
+    z-index: 100;
+}
+
+.game-over.hidden {
+    display: none;
+}
+
+.game-over h2 {
+    font-size: 2.5em;
+    color: #FFD600;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(255, 214, 0, 0.8);
+}
+
+.game-over p {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+}
+
+#final-score {
+    color: #FFD600;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-shadow: 0 0 10px rgba(255, 214, 0, 0.6);
+}
+
+.restart-btn {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #FF6B35, #FF1744);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4), 0 0 10px rgba(255, 107, 53, 0.2);
+}
+
+.restart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6), 0 0 15px rgba(255, 107, 53, 0.4);
+}
+
+.restart-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+    .game-wrapper {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        max-height: 40vh;
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+    
+    .container {
+        height: 100vh;
+        overflow: hidden;
+    }
+}
