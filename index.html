@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum-Collision</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="top-bar">
+    <div class="header-left">
+      <h1>Collision Simulator</h1>
+      <p class="subtitle">Conservation of Momentum</p>
+    </div>
+    <div class="header-right">
+      <div class="collision-type-header">
+        <label class="toggle">
+          <input type="radio" name="collisionType" value="elastic" checked>
+          <span>Elastic</span>
+        </label>
+        <label class="toggle">
+          <input type="radio" name="collisionType" value="inelastic">
+          <span>Inelastic</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="game-container">
+    <!-- Left Panel: Controls -->
+    <aside class="panel controls-panel">
+      <div class="panel-header">
+        <h2>Control Panel</h2>
+      </div>
+
+      <div class="object-selector">
+        <h3>Object Type</h3>
+        <select id="objectType" class="styled-select">
+          <option value="car" selected>Car</option>
+          <option value="ball">Ball</option>
+          <option value="cart">Cart</option>
+          <option value="block">Block</option>
+        </select>
+      </div>
+
+      <div class="input-section">
+        <h3>Object 1 Properties</h3>
+        <div class="input-row">
+          <div class="input-field">
+            <label for="m1">Mass (kg)</label>
+            <input type="number" id="m1" value="1200" min="0.1" step="100">
+          </div>
+          <div class="input-field">
+            <label for="v1">Vel (m/s)</label>
+            <input type="number" id="v1" value="8" step="0.5">
+          </div>
+        </div>
+      </div>
+
+      <div class="input-section">
+        <h3>Object 2 Properties</h3>
+        <div class="input-row">
+          <div class="input-field">
+            <label for="m2">Mass (kg)</label>
+            <input type="number" id="m2" value="1000" min="0.1" step="100">
+          </div>
+          <div class="input-field">
+            <label for="v2">Vel (m/s)</label>
+            <input type="number" id="v2" value="-5" step="0.5">
+          </div>
+        </div>
+      </div>
+
+      <div class="control-buttons">
+        <button id="startBtn" class="btn-primary">Start Simulation</button>
+        <button id="resetBtn" class="btn-secondary">Reset</button>
+        <!-- <button id="slowBtn" class="btn-secondary">Slow Motion</button> -->
+      </div>
+
+      <!-- <div class="tips-box">
+        <p><strong>Note:</strong> Negative velocity = moving left<br>Positive velocity = moving right</p>
+      </div> -->
+    </aside>
+
+    <!-- Center Panel: Simulation Arena -->
+    <section class="panel simulation-panel">
+      <div class="panel-header">
+        <h2>Simulation</h2>
+        <div class="status-indicator">
+          <span id="simStatus" class="status-badge">Ready</span>
+        </div>
+      </div>
+
+      <div id="simArea" class="sim-arena">
+        <div class="ground-line"></div>
+        <div class="center-line"></div>
+
+        <!-- Object 1 - Blue themed -->
+        <div id="object1" class="object" data-type="car">
+          <div class="object-visual">
+            <!-- Car SVG -->
+            <svg class="svg-car" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="carGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#4a90d9" />
+                  <stop offset="50%" style="stop-color:#2e6bb5" />
+                  <stop offset="100%" style="stop-color:#1e4a7a" />
+                </linearGradient>
+                <linearGradient id="windowGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#a8d8ff" />
+                  <stop offset="100%" style="stop-color:#4a7a9e" />
+                </linearGradient>
+                <radialGradient id="wheelGrad1">
+                  <stop offset="0%" style="stop-color:#5a5a5a" />
+                  <stop offset="100%" style="stop-color:#1a1a1a" />
+                </radialGradient>
+              </defs>
+              <path d="M8,38 L15,38 L22,22 L40,16 L80,16 L98,22 L105,38 L112,38 L112,48 L8,48 Z" fill="url(#carGrad1)"
+                stroke="#0a2a4a" stroke-width="2" />
+              <path d="M26,24 L38,19 L38,34 L24,34 Z" fill="url(#windowGrad1)" stroke="#1a3a5a" stroke-width="1.5" />
+              <path d="M42,19 L72,19 L78,24 L78,34 L42,34 Z" fill="url(#windowGrad1)" stroke="#1a3a5a"
+                stroke-width="1.5" />
+              <rect x="26" y="20" width="8" height="4" rx="1" fill="rgba(255,255,255,0.5)" />
+              <ellipse cx="104" cy="38" rx="6" ry="5" fill="#ffffaa" stroke="#cccc88" stroke-width="1" />
+              <rect x="10" y="34" width="8" height="10" rx="2" fill="#ff4444" stroke="#aa2222" stroke-width="1" />
+              <circle cx="28" cy="52" r="11" fill="url(#wheelGrad1)" stroke="#0a0a0a" stroke-width="3" />
+              <circle cx="28" cy="52" r="5" fill="#aaa" />
+              <circle cx="28" cy="52" r="2" fill="#666" />
+              <circle cx="88" cy="52" r="11" fill="url(#wheelGrad1)" stroke="#0a0a0a" stroke-width="3" />
+              <circle cx="88" cy="52" r="5" fill="#aaa" />
+              <circle cx="88" cy="52" r="2" fill="#666" />
+              <rect x="48" y="40" width="20" height="3" rx="1" fill="rgba(255,255,255,0.2)" />
+            </svg>
+
+            <!-- Ball SVG -->
+            <svg class="svg-ball" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="ballGrad1" cx="30%" cy="30%">
+                  <stop offset="0%" style="stop-color:#7dd3fc" />
+                  <stop offset="40%" style="stop-color:#0ea5e9" />
+                  <stop offset="100%" style="stop-color:#0369a1" />
+                </radialGradient>
+                <filter id="ballShadow1">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.4" />
+                </filter>
+              </defs>
+              <circle cx="40" cy="40" r="36" fill="url(#ballGrad1)" filter="url(#ballShadow1)" stroke="#0c4a6e"
+                stroke-width="2" />
+              <ellipse cx="26" cy="26" rx="14" ry="10" fill="rgba(255,255,255,0.5)" transform="rotate(-35 26 26)" />
+              <ellipse cx="30" cy="30" rx="6" ry="4" fill="rgba(255,255,255,0.7)" transform="rotate(-35 30 30)" />
+              <path d="M12,42 Q40,36 68,42" stroke="rgba(0,0,0,0.1)" stroke-width="2" fill="none" />
+              <path d="M40,8 Q46,40 40,72" stroke="rgba(0,0,0,0.08)" stroke-width="2" fill="none" />
+            </svg>
+
+            <!-- Cart SVG -->
+            <svg class="svg-cart" viewBox="0 0 110 55" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="cartGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#818cf8" />
+                  <stop offset="50%" style="stop-color:#6366f1" />
+                  <stop offset="100%" style="stop-color:#4338ca" />
+                </linearGradient>
+              </defs>
+              <rect x="5" y="8" width="95" height="28" rx="4" fill="url(#cartGrad1)" stroke="#312e81"
+                stroke-width="2" />
+              <rect x="10" y="12" width="85" height="4" rx="2" fill="rgba(255,255,255,0.3)" />
+              <line x1="98" y1="14" x2="108" y2="4" stroke="#4b5563" stroke-width="5" stroke-linecap="round" />
+              <circle cx="24" cy="44" r="10" fill="#fbbf24" stroke="#b45309" stroke-width="3" />
+              <circle cx="24" cy="44" r="4" fill="#78716c" />
+              <circle cx="81" cy="44" r="10" fill="#fbbf24" stroke="#b45309" stroke-width="3" />
+              <circle cx="81" cy="44" r="4" fill="#78716c" />
+            </svg>
+
+            <!-- Block SVG -->
+            <svg class="svg-block" viewBox="0 0 85 65" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="blockGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#60a5fa" />
+                  <stop offset="50%" style="stop-color:#3b82f6" />
+                  <stop offset="100%" style="stop-color:#1d4ed8" />
+                </linearGradient>
+              </defs>
+              <polygon points="8,12 62,12 75,4 21,4" fill="#93c5fd" />
+              <polygon points="62,12 75,4 75,55 62,62" fill="#1e40af" />
+              <rect x="8" y="12" width="54" height="50" fill="url(#blockGrad1)" stroke="#1e3a8a" stroke-width="2" />
+              <rect x="12" y="16" width="46" height="4" rx="1" fill="rgba(255,255,255,0.3)" />
+              <text x="35" y="46" font-size="22" font-weight="bold" fill="rgba(255,255,255,0.5)" text-anchor="middle"
+                font-family="Arial">M</text>
+            </svg>
+          </div>
+          <div class="object-label"></div>
+        </div>
+
+        <!-- Object 2 - Red/Orange themed -->
+        <div id="object2" class="object" data-type="car">
+          <div class="object-visual">
+            <!-- Car SVG -->
+            <svg class="svg-car" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="carGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#f97316" />
+                  <stop offset="50%" style="stop-color:#ea580c" />
+                  <stop offset="100%" style="stop-color:#9a3412" />
+                </linearGradient>
+                <linearGradient id="windowGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#a8d8ff" />
+                  <stop offset="100%" style="stop-color:#4a7a9e" />
+                </linearGradient>
+                <radialGradient id="wheelGrad2">
+                  <stop offset="0%" style="stop-color:#5a5a5a" />
+                  <stop offset="100%" style="stop-color:#1a1a1a" />
+                </radialGradient>
+              </defs>
+              <path d="M8,38 L15,38 L22,22 L40,16 L80,16 L98,22 L105,38 L112,38 L112,48 L8,48 Z" fill="url(#carGrad2)"
+                stroke="#7c2d12" stroke-width="2" />
+              <path d="M26,24 L38,19 L38,34 L24,34 Z" fill="url(#windowGrad2)" stroke="#1a3a5a" stroke-width="1.5" />
+              <path d="M42,19 L72,19 L78,24 L78,34 L42,34 Z" fill="url(#windowGrad2)" stroke="#1a3a5a"
+                stroke-width="1.5" />
+              <rect x="26" y="20" width="8" height="4" rx="1" fill="rgba(255,255,255,0.5)" />
+              <ellipse cx="104" cy="38" rx="6" ry="5" fill="#ffffaa" stroke="#cccc88" stroke-width="1" />
+              <rect x="10" y="34" width="8" height="10" rx="2" fill="#ff4444" stroke="#aa2222" stroke-width="1" />
+              <circle cx="28" cy="52" r="11" fill="url(#wheelGrad2)" stroke="#0a0a0a" stroke-width="3" />
+              <circle cx="28" cy="52" r="5" fill="#aaa" />
+              <circle cx="28" cy="52" r="2" fill="#666" />
+              <circle cx="88" cy="52" r="11" fill="url(#wheelGrad2)" stroke="#0a0a0a" stroke-width="3" />
+              <circle cx="88" cy="52" r="5" fill="#aaa" />
+              <circle cx="88" cy="52" r="2" fill="#666" />
+              <rect x="48" y="40" width="20" height="3" rx="1" fill="rgba(255,255,255,0.2)" />
+            </svg>
+
+            <!-- Ball SVG -->
+            <svg class="svg-ball" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="ballGrad2" cx="30%" cy="30%">
+                  <stop offset="0%" style="stop-color:#fdba74" />
+                  <stop offset="40%" style="stop-color:#f97316" />
+                  <stop offset="100%" style="stop-color:#c2410c" />
+                </radialGradient>
+                <filter id="ballShadow2">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.4" />
+                </filter>
+              </defs>
+              <circle cx="40" cy="40" r="36" fill="url(#ballGrad2)" filter="url(#ballShadow2)" stroke="#7c2d12"
+                stroke-width="2" />
+              <ellipse cx="26" cy="26" rx="14" ry="10" fill="rgba(255,255,255,0.5)" transform="rotate(-35 26 26)" />
+              <ellipse cx="30" cy="30" rx="6" ry="4" fill="rgba(255,255,255,0.7)" transform="rotate(-35 30 30)" />
+              <path d="M12,42 Q40,36 68,42" stroke="rgba(0,0,0,0.1)" stroke-width="2" fill="none" />
+              <path d="M40,8 Q46,40 40,72" stroke="rgba(0,0,0,0.08)" stroke-width="2" fill="none" />
+            </svg>
+
+            <!-- Cart SVG -->
+            <svg class="svg-cart" viewBox="0 0 110 55" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="cartGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#fb923c" />
+                  <stop offset="50%" style="stop-color:#f97316" />
+                  <stop offset="100%" style="stop-color:#c2410c" />
+                </linearGradient>
+              </defs>
+              <rect x="5" y="8" width="95" height="28" rx="4" fill="url(#cartGrad2)" stroke="#7c2d12"
+                stroke-width="2" />
+              <rect x="10" y="12" width="85" height="4" rx="2" fill="rgba(255,255,255,0.3)" />
+              <line x1="98" y1="14" x2="108" y2="4" stroke="#4b5563" stroke-width="5" stroke-linecap="round" />
+              <circle cx="24" cy="44" r="10" fill="#fbbf24" stroke="#b45309" stroke-width="3" />
+              <circle cx="24" cy="44" r="4" fill="#78716c" />
+              <circle cx="81" cy="44" r="10" fill="#fbbf24" stroke="#b45309" stroke-width="3" />
+              <circle cx="81" cy="44" r="4" fill="#78716c" />
+            </svg>
+
+            <!-- Block SVG -->
+            <svg class="svg-block" viewBox="0 0 85 65" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="blockGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#fdba74" />
+                  <stop offset="50%" style="stop-color:#f97316" />
+                  <stop offset="100%" style="stop-color:#c2410c" />
+                </linearGradient>
+              </defs>
+              <polygon points="8,12 62,12 75,4 21,4" fill="#fed7aa" />
+              <polygon points="62,12 75,4 75,55 62,62" fill="#9a3412" />
+              <rect x="8" y="12" width="54" height="50" fill="url(#blockGrad2)" stroke="#7c2d12" stroke-width="2" />
+              <rect x="12" y="16" width="46" height="4" rx="1" fill="rgba(255,255,255,0.3)" />
+              <text x="35" y="46" font-size="22" font-weight="bold" fill="rgba(255,255,255,0.5)" text-anchor="middle"
+                font-family="Arial">M</text>
+            </svg>
+          </div>
+          <div class="object-label"></div>
+        </div>
+
+        <div class="arrow-indicators">
+          <div class="arrow-left">← LEFT</div>
+          <div class="arrow-right">RIGHT →</div>
+        </div>
+      </div>
+
+      <div class="legend-bar">
+        <div class="legend-item">
+          <span class="dot dot-obj1"></span>
+          <span>Object 1</span>
+        </div>
+        <div class="legend-item">
+          <span class="dot dot-obj2"></span>
+          <span>Object 2</span>
+        </div>
+        <div class="collision-indicator" id="collisionMsg"></div>
+      </div>
+    </section>
+
+    <!-- Right Panel: Results & Physics -->
+    <aside class="panel results-panel">
+      <div class="panel-header">
+        <h2>Results</h2>
+      </div>
+
+      <div class="results-grid">
+        <div class="result-card">
+          <span class="result-label">Momentum Before</span>
+          <span id="pBefore" class="result-value">--</span>
+        </div>
+        <div class="result-card">
+          <span class="result-label">Momentum After</span>
+          <span id="pAfter" class="result-value">--</span>
+        </div>
+        <div class="result-card">
+          <span class="result-label">Conserved?</span>
+          <span id="conserved" class="result-value badge">--</span>
+        </div>
+        <div class="result-card">
+          <span class="result-label">Final v₁</span>
+          <span id="va" class="result-value">--</span>
+        </div>
+        <div class="result-card">
+          <span class="result-label">Final v₂</span>
+          <span id="vb" class="result-value">--</span>
+        </div>
+        <div class="result-card">
+          <span class="result-label">Directions</span>
+          <span id="directions" class="result-value small">--</span>
+        </div>
+      </div>
+
+      <div class="formula-section">
+        <h3>Calculations</h3>
+        <div class="formula-box">
+          <pre id="stepsText">Press Start to run simulation...</pre>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
