@@ -28,6 +28,7 @@ const scoreEl = document.getElementById("score");
 const levelEl = document.getElementById("level");
 const simStatusEl = document.getElementById("simStatus");
 const collisionMsgEl = document.getElementById("collisionMsg");
+const conclusionTextEl = document.getElementById("conclusionText");
 
 // Simulation State
 let animationId = null;
@@ -219,6 +220,25 @@ function updateCalculations(predictedOnly = false) {
   }
 
   stepsEl.textContent = steps.join("\n");
+
+  // Generate conclusion
+  if (!predictedOnly) {
+    let conclusion = "";
+    if (type === "elastic") {
+      conclusion = `In this elastic collision, momentum was ${conserved ? "successfully conserved" : "not conserved (check inputs)"}. `;
+      conclusion += `Object 1 changed from ${v1.toFixed(1)} m/s to ${va.toFixed(1)} m/s, while Object 2 changed from ${v2.toFixed(1)} m/s to ${vb.toFixed(1)} m/s. `;
+      conclusion += `Both kinetic energy and momentum are conserved in elastic collisions, which is why the objects bounce off each other with calculated velocities.`;
+    } else {
+      const energyLoss = KE_before - KE_after;
+      const energyPercent = ((energyLoss / KE_before) * 100).toFixed(1);
+      conclusion = `In this inelastic collision, the objects stuck together and moved at ${va.toFixed(1)} m/s. `;
+      conclusion += `Momentum was ${conserved ? "conserved" : "not conserved"} (${pBefore.toFixed(1)} → ${pAfter.toFixed(1)} kg·m/s), but `;
+      conclusion += `${energyLoss.toFixed(1)} J of kinetic energy (${energyPercent}%) was lost, converted to heat, sound, and deformation.`;
+    }
+    conclusionTextEl.textContent = conclusion;
+  } else {
+    conclusionTextEl.textContent = "Run the simulation to see the analysis.";
+  }
 
   // For pre-run preview, show predicted final velocities
   if (predictedOnly) {

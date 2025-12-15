@@ -556,6 +556,32 @@ body {
   transition: all 0.3s ease;
 }
 
+/* Conclusion Box */
+.conclusion-box {
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 2px solid #86efac;
+  border-left: 4px solid #22c55e;
+  border-radius: 8px;
+}
+
+.conclusion-box h3 {
+  font-size: 0.9rem;
+  color: #166534;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.conclusion-box p {
+  font-size: 0.9rem;
+  color: #166534;
+  line-height: 1.6;
+  margin: 0;
+}
+
 /* Results Panel */
 .results-grid {
   display: flex;
